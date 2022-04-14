@@ -20,4 +20,13 @@ export class UsersService {
     const result = await createdUser.save();
     return result.id;
   }
+
+  async getUsers() {
+    const users = await this.userModel.find().exec();
+    return users.map((user) => ({
+      id: user.id,
+      username: user.username,
+    })) as User[];
+  }
+
 }
