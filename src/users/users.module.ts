@@ -3,6 +3,8 @@ import { UsersService } from './users.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from './users.model';
 import { UsersController } from './users.controller';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -13,7 +15,13 @@ import { UsersController } from './users.controller';
     ]),
   ],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [
+    UsersService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
   exports: [UsersService],
 })
 export class UsersModule {}

@@ -7,15 +7,21 @@ import { User } from './users.model';
 export class UsersService {
   constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
-  async findOne(username: string): Promise<User | undefined> {
-    const user = await this.userModel.findOne({ username }).exec();
-    return user;
+  async findOne(user): Promise<User | undefined> {
+    const foundUser = await this.userModel
+      .findOne({
+        $or: [{ email: user.email }, { username: user.username }],
+      })
+      .exec();
+
+    return foundUser;
   }
 
-  async createUser(username: string, password: string) {
+  async createUser(user) {
     const createdUser = new this.userModel({
-      username,
-      password,
+      username: user.username,
+      password: user.password,
+      email: user.email,
     });
     const result = await createdUser.save();
     return result.id;
@@ -26,7 +32,7 @@ export class UsersService {
     return users.map((user) => ({
       id: user.id,
       username: user.username,
+      email: user.email,
     })) as User[];
   }
-
 }

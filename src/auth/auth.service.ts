@@ -1,8 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from 'src/users/users.service';
-
 import * as bcrypt from 'bcrypt';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
@@ -21,14 +20,25 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const payload = { username: user.username };
+    const payload = { email: user.email };
     return {
       access_token: this.jwtService.sign(payload),
     };
   }
 
   async signup(user: any) {
-    // Create a function to hash the password
+    // if user.username is already in the database, return error
+    const foundUser = await this.usersService.findOne(user);
+
+    if (foundUser) {
+      if (foundUser.username === user.username) {
+        throw new ForbiddenException('Username already exists');
+      } else if (foundUser.email === user.email) {
+        throw new ForbiddenException('Email already exists');
+      }
+    }
+
+    // function to hash the password
     const hashPassword = (password: string) => {
       return bcrypt.hash(password, 10);
     };
@@ -36,10 +46,11 @@ export class AuthService {
     // Hash the password
     const hashedPassword = await hashPassword(user.password);
 
-    const createdUser = await this.usersService.createUser(
-      user.username,
-      hashedPassword,
-    );
+    const createdUser = await this.usersService.createUser({
+      username: user.username,
+      password: hashedPassword,
+      email: user.email,
+    });
 
     return createdUser;
   }

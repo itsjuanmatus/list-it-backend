@@ -9,12 +9,8 @@ export class ProductsService {
     @InjectModel('Product') private readonly productModel: Model<Product>,
   ) {}
 
-  async insertProduct(title: string, description: string, price: number) {
-    const newProduct = new this.productModel({
-      title,
-      description,
-      price,
-    });
+  async insertProduct(payload) {
+    const newProduct = new this.productModel(payload);
     const result = await newProduct.save();
     return result.id;
   }
@@ -39,23 +35,19 @@ export class ProductsService {
     };
   }
 
-  async updateProduct(
-    productId: string,
-    title: string,
-    desc: string,
-    price: number,
-  ) {
-    const updatedProduct = await this.findProduct(productId);
-    if (title) {
-      updatedProduct.title = title;
-    }
-    if (desc) {
-      updatedProduct.description = desc;
-    }
-    if (price) {
-      updatedProduct.price = price;
-    }
-    updatedProduct.save();
+  async updateProduct(product) {
+    const updateProduct = Object.keys(product).reduce((acc, key) => {
+      if (product[key] !== undefined) {
+        acc[key] = product[key];
+      }
+      return acc;
+    }, {});
+
+    await this.productModel
+      .updateOne({ _id: product.id }, updateProduct)
+      .exec();
+
+    return null;
   }
 
   async deleteProduct(prodId: string) {
