@@ -32,9 +32,6 @@ export class UsersService {
 
     return users
       .map((user) => ({
-        id: user.id,
-        username: user.username,
-        email: user.email,
         ...user.toJSON(),
       }))
       .reduce((acc, user) => {
