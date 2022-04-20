@@ -1,15 +1,19 @@
 import {
   Body,
   Controller,
-  Delete, ForbiddenException, Get,
+  Delete,
+  ForbiddenException,
+  Get,
   Param,
   Patch,
   Post,
-  Request
+  Request,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateListingDto, UpdateListingDto } from './dtos';
 import { ListingsService } from './listings.service';
 
+@ApiTags('listings')
 @Controller('listings')
 export class ListingsController {
   constructor(private readonly listingsService: ListingsService) {}

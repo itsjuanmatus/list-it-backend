@@ -1,6 +1,8 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { CreateUserDto } from 'src/users/dtos';
+import { LoginDto } from 'src/users/dtos/login.dto';
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()
@@ -19,7 +21,7 @@ export class AuthService {
     return null;
   }
 
-  async login(user: any) {
+  async login(user: LoginDto) {
     const foundUser = await this.usersService.findOne(user);
     if (!foundUser) {
       throw new ForbiddenException('Invalid credentials');
@@ -32,7 +34,7 @@ export class AuthService {
     };
   }
 
-  async signup(user: any) {
+  async signup(user: CreateUserDto) {
     // if user.username is already in the database, return error
     const foundUser = await this.usersService.findOne(user);
 

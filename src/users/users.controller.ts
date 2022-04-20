@@ -8,10 +8,11 @@ import {
   Request,
   ForbiddenException,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateUserDto, UpdateUserDto } from './dtos';
 import { UsersService } from './users.service';
 
-// Create a users controller
+@ApiTags('users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
