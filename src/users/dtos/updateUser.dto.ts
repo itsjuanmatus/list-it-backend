@@ -13,4 +13,8 @@ export class UpdateUserDto extends UserDto {
   @IsOptional()
   @IsEmail()
   email: string;
+
+  @IsOptional()
+  @IsString()
+  id: string;
 }

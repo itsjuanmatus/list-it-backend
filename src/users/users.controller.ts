@@ -1,5 +1,14 @@
-import { Controller, Get, Param, Post, Body } from '@nestjs/common';
-import { CreateUserDto } from './dtos';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Body,
+  Patch,
+  Request,
+  ForbiddenException,
+} from '@nestjs/common';
+import { CreateUserDto, UpdateUserDto } from './dtos';
 import { UsersService } from './users.service';
 
 // Create a users controller
@@ -21,5 +30,20 @@ export class UsersController {
   async addUser(@Body() user: CreateUserDto) {
     const generatedId = await this.usersService.createUser(user);
     return { id: generatedId };
+  }
+
+  @Patch(':id')
+  async updateUser(
+    @Param('id') userId: string,
+    @Body() user: UpdateUserDto,
+    @Request() req,
+  ) {
+    if (req.user.userId !== userId && req.user.role !== 'admin') {
+      throw new ForbiddenException('You are not allowed to update this user');
+    }
+
+    user.id = userId;
+    await this.usersService.updateUser(user);
+    return null;
   }
 }

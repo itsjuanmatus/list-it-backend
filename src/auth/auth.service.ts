@@ -20,7 +20,13 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const payload = { email: user.email };
+    const foundUser = await this.usersService.findOne(user);
+    if (!foundUser) {
+      throw new ForbiddenException('Invalid credentials');
+    }
+
+    const payload = { email: user.email, sub: foundUser.id };
+
     return {
       access_token: this.jwtService.sign(payload),
     };

@@ -29,10 +29,31 @@ export class UsersService {
 
   async getUsers() {
     const users = await this.userModel.find().exec();
-    return users.map((user) => ({
-      id: user.id,
-      username: user.username,
-      email: user.email,
-    })) as User[];
+
+    return users
+      .map((user) => ({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        ...user.toJSON(),
+      }))
+      .reduce((acc, user) => {
+        delete user.password && delete user.__v && delete user._id;
+        acc.push(user);
+        return acc;
+      }, []) as User[];
+  }
+
+  async updateUser(user) {
+    const updateUser = Object.keys(user).reduce((acc, key) => {
+      if (user[key] !== undefined) {
+        acc[key] = user[key];
+      }
+      return acc;
+    }, {});
+
+    await this.userModel.updateOne({ _id: user.id }, updateUser).exec();
+
+    return null;
   }
 }
