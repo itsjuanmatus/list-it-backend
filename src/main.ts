@@ -10,9 +10,8 @@ async function bootstrap() {
   // Documentation
   const config = new DocumentBuilder()
     .setTitle('List it API')
-    .setDescription('List it API description')
+    .setDescription('Documentation for the List it API')
     .setVersion('1.0')
-    .addTag('list it')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

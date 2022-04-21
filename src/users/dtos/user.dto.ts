@@ -2,12 +2,17 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsOptional, IsDate } from 'class-validator';
 
 export class UserDto {
-  @ApiProperty()
+  @ApiProperty({
+    description: 'An array of product ids',
+  })
   @IsOptional()
   @IsString()
   products?: string[];
 
-  @ApiProperty()
+  @ApiProperty({
+    description:
+      'An array of listing ids, these can be both their own listings or listings from other users',
+  })
   @IsOptional()
   @IsString()
   listings?: string[];
@@ -32,7 +37,9 @@ export class UserDto {
   @IsString()
   address?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Where the user lives',
+  })
   @IsOptional()
   @IsString()
   city?: string;
