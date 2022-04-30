@@ -8,6 +8,8 @@ import { ListingsModule } from './listings/listings.module';
 import { ProductsModule } from './products/products.module';
 import { UsersModule } from './users/users.module';
 import { LocationsModule } from './locations/locations.module';
+import { CountriesModule } from './countries/countries.module';
+import { CitiesModule } from './cities/cities.module';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -25,6 +27,8 @@ dotenv.config();
     UsersModule,
     ListingsModule,
     LocationsModule,
+    CountriesModule,
+    CitiesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
