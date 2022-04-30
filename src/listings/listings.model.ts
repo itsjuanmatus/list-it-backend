@@ -26,12 +26,17 @@ export const ListingSchema = new mongoose.Schema({
 
   price: { type: Number, required: true },
 
-  locations: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Location',
-    },
-  ],
+  country: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Country',
+  },
+
+  city: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'City',
+  },
+
+  place_id: { type: String, required: false },
 
   reviews: [
     {
@@ -52,7 +57,9 @@ export interface Listing extends mongoose.Document {
   owner: string;
   listers: string[];
   price: number;
-  locations: string[];
+  country: string;
+  city: string;
+  place_id: string;
   reviews: string[];
   createdAt?: Date;
   updatedAt?: Date;

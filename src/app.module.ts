@@ -1,16 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import * as dotenv from 'dotenv';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { CitiesModule } from './cities/cities.module';
+import { CountriesModule } from './countries/countries.module';
 import { ListingsModule } from './listings/listings.module';
 import { ProductsModule } from './products/products.module';
 import { UsersModule } from './users/users.module';
-import { LocationsModule } from './locations/locations.module';
-import { CountriesModule } from './countries/countries.module';
-import { CitiesModule } from './cities/cities.module';
-import * as dotenv from 'dotenv';
 dotenv.config();
 
 @Module({
@@ -26,7 +25,6 @@ dotenv.config();
     AuthModule,
     UsersModule,
     ListingsModule,
-    LocationsModule,
     CountriesModule,
     CitiesModule,
   ],

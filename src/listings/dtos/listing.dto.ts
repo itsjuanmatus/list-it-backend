@@ -18,12 +18,24 @@ export class ListingDto {
   listers: string[];
 
   @ApiProperty({
-    description: 'An array of location ids',
+    description: 'The country of the listing',
   })
+  @IsString()
   @IsOptional()
-  @IsArray()
-  locations: string[];
+  country: string;
 
+  @ApiProperty({
+    description: 'The city of the listing',
+  })
+  @IsString()
+  @IsOptional()
+  city: string;
+
+  @ApiProperty({
+    description: 'The google place_id of the listing',
+  })
+  @IsString()
+  @IsOptional()
   @ApiProperty({
     description: 'An array of review ids',
   })
