@@ -33,4 +33,9 @@ export class CountriesService {
 
     return country;
   }
+
+  async getCitiesByCountry(countryId: string) {
+    const country = await this.getSingleCountry(countryId);
+    return country[0].cities;
+  }
 }
